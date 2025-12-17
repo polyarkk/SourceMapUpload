@@ -1,5 +1,4 @@
 using Tomlyn;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace SourceMapUpload;
 

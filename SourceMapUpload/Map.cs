@@ -1,4 +1,3 @@
-using Microsoft.VisualBasic.FileIO;
 using Renci.SshNet;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
@@ -6,7 +5,6 @@ using System.Text;
 
 namespace SourceMapUpload;
 
-// todo: pakrat
 public class Map {
     private readonly CompileConfig _config;
 
@@ -180,13 +178,9 @@ public class Map {
         try {
             scpClient.Connect();
 
-            using (FileStream fileStream = new(_mapPath, FileMode.Open, FileAccess.Read)) {
-                scpClient.Upload(fileStream, remoteMapPath);
-            }
+            using FileStream fileStream = new(_mapPath, FileMode.Open, FileAccess.Read);
 
-            Console.WriteLine($"\n===== Map uploaded: {_mapPath} → {remoteMapPath} =====");
-
-            return true;
+            scpClient.Upload(fileStream, remoteMapPath);
         } catch (Exception ex) {
             Console.WriteLine($"Error: Failed to upload the map to the remote server! Reason: {ex.Message}");
 
@@ -196,5 +190,9 @@ public class Map {
                 scpClient.Disconnect();
             }
         }
+
+        Console.WriteLine($"\n===== Map uploaded: {_mapPath} → {remoteMapPath} =====");
+
+        return true;
     }
 }
